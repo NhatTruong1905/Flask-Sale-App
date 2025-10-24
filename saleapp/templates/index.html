@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang Chủ</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
 </head>
 <body>
-<button>NHAN DI</button>
+    <h1 class="subject">CHÀO MỪNG CÁC BẠN ĐẾN WEBSITE BÁN HÀNG TRỰC TUYẾN</h1>
+
+    <ul>
+        <li><a href="{{ url_for('product_list') }}">Tất cả sản phẩm</a></li>
+        {% for c in categories %}
+        <li><a href="#">{{ c.name }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

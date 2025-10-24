@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Sản Phẩm</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+</head>
+<body>
+<h1 class="subject">DANH MỤC SẢN PHẨM</h1>
+<div class="container">
+    <table border="1" class="product">
+        <tr>
+            <th></th>
+            <th>Mã sản phẩm</th>
+            <th>Tên sản phẩm</th>
+            <th>Mô tả</th>
+            <th>Giá bán</th>
+        </tr>
+        {% for p in products %}
+            <tr>
+                <td>
+                    <img src="{{ url_for('static', filename=p.image) }}" width="120" alt="{{ p.name }}">
+                </td>
+                <td>{{ p.id }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.description }}</td>
+                <td>{{ "{:,.1f}".format(p.price) }} VND</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
