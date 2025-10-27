@@ -6,13 +6,13 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
 </head>
 <body>
-    <h1 class="subject">CHÀO MỪNG CÁC BẠN ĐẾN WEBSITE BÁN HÀNG TRỰC TUYẾN</h1>
+<h1 class="subject">CHÀO MỪNG CÁC BẠN ĐẾN WEBSITE BÁN HÀNG TRỰC TUYẾN</h1>
+<ul>
+    <li><a href="{{ url_for('product_list') }}">Tất cả sản phẩm</a></li>
+    {% for c in categories %}
+        <li><a href="{{ url_for('product_list',category_id=c.id) }}">{{ c.name }}</a></li>
+    {% endfor %}
+</ul>
 
-    <ul>
-        <li><a href="{{ url_for('product_list') }}">Tất cả sản phẩm</a></li>
-        {% for c in categories %}
-        <li><a href="#">{{ c.name }}</a></li>
-        {% endfor %}
-    </ul>
 </body>
 </html>

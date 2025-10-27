@@ -10,11 +10,17 @@ body {
     background-color: lightblue;
     color: darkblue;
 }
-table.product{
+
+table.product {
     border-collapse: collapse;
     width: 100%;
 }
-.container{
+
+.container {
     width: 80%;
     margin: 0 auto;
+}
+
+.flex {
+    display: flex;
 }

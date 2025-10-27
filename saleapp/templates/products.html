@@ -7,7 +7,17 @@
 </head>
 <body>
 <h1 class="subject">DANH MỤC SẢN PHẨM</h1>
+
 <div class="container">
+    <hr>
+    <form>
+        <input type="text" name="keyword" placeholder="Nhập tên cần tìm..."/>
+        <input type="number" name="from_price" placeholder="Nhập giá bắt đầu..."/>
+        <input type="number" name="to_price" placeholder="Nhập giá kết thúc..."/>
+        <input type="submit" value="Tìm"/>
+    </form>
+    <hr>
+
     <table border="1" class="product">
         <tr>
             <th></th>
@@ -19,7 +29,9 @@
         {% for p in products %}
             <tr>
                 <td>
-                    <img src="{{ url_for('static', filename=p.image) }}" width="120" alt="{{ p.name }}">
+                    <a href="{{ url_for('product_detail',product_id=p.id) }}">
+                        <img src="{{ url_for('static', filename=p.image) }}" width="120" alt="{{ p.name }}">
+                    </a>
                 </td>
                 <td>{{ p.id }}</td>
                 <td>{{ p.name }}</td>
