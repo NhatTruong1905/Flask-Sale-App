@@ -1,7 +1,8 @@
 import json, os
 
 from saleapp import app
-from saleapp.models import Category, Product
+from saleapp.models import Category, Product, User
+import hashlib
 
 
 # def read_json(path):
@@ -12,6 +13,7 @@ from saleapp.models import Category, Product
 def load_categories():
     # return read_json(os.path.join(app.root_path, 'data/categories.json'))
     return Category.query.all()
+
 
 def load_products(cate_id=None, kw=None, page=1):
     query = Product.query
@@ -25,7 +27,10 @@ def load_products(cate_id=None, kw=None, page=1):
     return query.all()
 
 
-# def get_product_by_id(product_id):
-#     products = read_json(os.path.join(app.root_path, 'data/products.json'))
-#
-#     return [p for p in products if (p['id'] == product_id)][0]
+def get_user_by_id(id):
+    return User.query.get(id)
+
+
+def auth_user(username, password):
+    password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
+    return User.query.filter(User.username == username, User.password == password).first()

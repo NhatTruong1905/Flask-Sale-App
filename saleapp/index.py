@@ -4,8 +4,9 @@ import sys
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
-from saleapp import app, utils
-from flask import render_template, request
+from saleapp import app, utils, login
+from flask import render_template, request, redirect
+from flask_login import login_user
 import utils
 
 
@@ -17,6 +18,13 @@ def home():
 
     return render_template('index.html', categories=categories, products=products)
 
+@app.route('/login')
+def login_view():
+    return render_template('login.html')
+
+@app.route('/register')
+def register_view():
+    return render_template('register.html')
 
 # @app.route('/products')
 # def product_list():
@@ -36,6 +44,21 @@ def home():
 # def product_detail(product_id):
 #     product = utils.get_product_by_id(product_id)
 #     return render_template('product_detail.html', product=product)
+
+@app.route('/login', methods=['POST'])
+def login_process():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = utils.auth_user(username=username, password=password)
+    if user:
+        login_user(user=user)
+
+    return redirect('/admin')
+
+
+@login.user_loader
+def load_user(id):
+    return utils.get_user_by_id(id)
 
 
 if __name__ == '__main__':
