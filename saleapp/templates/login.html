@@ -3,5 +3,19 @@
 {% block title %}Đăng nhập{% endblock %}
 
 {% block content %}
-<h1 class="text-success">ĐĂNG NHẬP NGƯỜI DÙNG</h1>
-{% endblock %}
+<h1 class="text-success text-center mt-2">ĐĂNG NHẬP NGƯỜI DÙNG</h1>
+
+<form method="post" action="/login?next=/">
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" placeholder="Tên đăng nhập" id="name" name="username">
+        <label for="name">Tên đăng nhập</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="password" class="form-control" placeholder="Mật khẩu" id="pwd" name="password">
+        <label for="pwd">Mật khẩu</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+    </div>
+</form>
+{% endblock %}x
