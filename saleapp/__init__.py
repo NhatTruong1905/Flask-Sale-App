@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import cloudinary.uploader
 
 app = Flask(__name__)
 app.secret_key = '!$$$@%!$@^&*)@^&!&^@%#&!&^@$$%^%!'
@@ -10,3 +11,7 @@ app.config['PAGE_SIZE'] = 8
 
 db = SQLAlchemy(app=app)
 login = LoginManager(app=app)
+
+cloudinary.config(cloud_name='dice7ntoz',
+                  api_key='221538841891726',
+                  api_secret='AYNYgbG38nTwffmwX-SuzhLDO0I')

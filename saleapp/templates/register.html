@@ -4,4 +4,39 @@
 
 {% block content %}
 <h1 class="text-success text-center mt-2">ĐĂNG KÝ NGƯỜI DÙNG</h1>
+
+{% if err_msg %}
+<div class="alert alert-danger">{{ err_msg }}</div>
+{% endif %}
+
+<form method="post" action="/register" enctype="multipart/form-data">
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" placeholder="Tên đăng nhập" id="name" name="name">
+        <label for="name">Họ tên</label>
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" placeholder="Tên đăng nhập" id="username" name="username">
+        <label for="username">Tên đăng nhập</label>
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <input type="password" class="form-control" placeholder="Mật khẩu" id="pwd" name="password">
+        <label for="pwd">Mật khẩu</label>
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="confirm" name="confirm">
+        <label for="confirm">Xác nhận mật khẩu</label>
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <input type="file" class="form-control" id="avatar" name="avatar">
+        <label for="avatar"></label>
+    </div>
+
+    <div class="form-floating mb-3 mt-3">
+        <button type="submit" class="btn btn-primary">Đăng ký</button>
+    </div>
+</form>
 {% endblock %}

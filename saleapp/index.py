@@ -5,9 +5,11 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
 from saleapp import app, utils, login
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, jsonify
 from flask_login import login_user, logout_user
 import math
+from saleapp.utils import add_user
+from sqlalchemy.exc import PendingRollbackError
 
 
 @app.route('/')
@@ -29,30 +31,28 @@ def register_view():
     return render_template('register.html')
 
 
+@app.route('/register', methods=['POST'])
+def register_process():
+    data = request.form
+
+    password = data['password']
+    confirm = data['confirm']
+    if password != confirm:
+        err_msg = 'Mật khẩu không khớp'
+        return render_template('register.html', err_msg=err_msg)
+    try:
+        add_user(name=data.get('name'), username=data.get('username'), password=data.get('password'),
+                 avatar=request.files.get('avatar'))
+        return redirect('/login')
+    except Exception as ex:
+        return render_template('register.html', err_msg=str(ex))
+
+
 @app.route('/logout')
 def Logout_process():
     logout_user()
     return redirect('/login')
 
-
-# @app.route('/products')
-# def product_list():
-
-
-# cate_id = request.args.get('category_id')
-# keyword = request.args.get('keyword')
-# from_price = request.args.get('from_price')
-# to_price = request.args.get('to_price')
-# products = utils.load_products()
-
-
-# return render_template('products.html', products=products)
-
-
-# @app.route('/products/<int:product_id>')
-# def product_detail(product_id):
-#     product = utils.get_product_by_id(product_id)
-#     return render_template('product_detail.html', product=product)
 
 @app.route('/login', methods=['POST'])
 def login_process():
@@ -64,6 +64,11 @@ def login_process():
 
     next = request.args.get('next')
     return redirect(next if next else '/admin')
+
+
+@app.route('/api/carts', methods=['POST'])
+def add_to_cart():
+    print(request.json)
 
 
 @app.context_processor
