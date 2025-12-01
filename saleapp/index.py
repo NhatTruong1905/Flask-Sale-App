@@ -4,21 +4,20 @@ import sys
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
-from saleapp import app, utils, login
-from flask import render_template, request, redirect, jsonify
+from saleapp import app, dao, login, utils
+from flask import render_template, request, redirect, jsonify, session, Flask
 from flask_login import login_user, logout_user
 import math
-from saleapp.utils import add_user
-from sqlalchemy.exc import PendingRollbackError
+from saleapp.dao import add_user
 
 
 @app.route('/')
 def home():
-    products = utils.load_products(cate_id=request.args.get('category_id'), kw=request.args.get('kw'),
-                                   page=int(request.args.get('page', 1)))
+    products = dao.load_products(cate_id=request.args.get('category_id'), kw=request.args.get('kw'),
+                                 page=int(request.args.get('page', 1)))
 
     return render_template('index.html', products=products,
-                           page=math.ceil(utils.count_products() / app.config["PAGE_SIZE"]))
+                           page=math.ceil(dao.count_products() / app.config["PAGE_SIZE"]))
 
 
 @app.route('/login')
@@ -49,7 +48,7 @@ def register_process():
 
 
 @app.route('/logout')
-def Logout_process():
+def logout_process():
     logout_user()
     return redirect('/login')
 
@@ -58,29 +57,78 @@ def Logout_process():
 def login_process():
     username = request.form.get('username')
     password = request.form.get('password')
-    user = utils.auth_user(username=username, password=password)
+    user = dao.auth_user(username=username, password=password)
     if user:
         login_user(user=user)
 
     next = request.args.get('next')
-    return redirect(next if next else '/admin')
+    return redirect(next if next else '/')
 
 
 @app.route('/api/carts', methods=['POST'])
 def add_to_cart():
-    print(request.json)
+    cart = session.get('cart')
+    if not cart:
+        cart = {}
+
+    id = str(request.json.get('id'))
+
+    if id in cart:
+        cart[id]['quantity'] += 1
+    else:
+        name = request.json.get('name')
+        price = request.json.get('price')
+        cart[id] = {
+            'id': id,
+            'name': name,
+            'price': price,
+            'quantity': 1
+        }
+
+    session['cart'] = cart
+    # print(cart)
+
+    return jsonify(utils.stats_cart(cart))
+
+
+@app.route('/api/carts/<id>', methods=['PUT'])
+def update_to_cart(id):
+    cart = session.get('cart')
+
+    if cart and id in cart:
+        cart[id]['quantity'] = int(request.json.get('quantity'))
+
+    session['cart'] = cart
+    return jsonify(utils.stats_cart(cart))
+
+
+@app.route('/api/carts/<id>', methods=['DELETE'])
+def delete_to_cart(id):
+    cart = session.get('cart')
+
+    if cart and id in cart:
+        del cart[id]
+
+    session['cart'] = cart
+    return jsonify(utils.stats_cart(cart))
+
+
+@app.route('/cart')
+def cart_view():
+    return render_template('cart.html')
 
 
 @app.context_processor
 def common_responses():
     return {
-        'categories': utils.load_categories()
+        'categories': dao.load_categories(),
+        'cart_stats': utils.stats_cart(session.get('cart'))
     }
 
 
 @login.user_loader
 def load_user(id):
-    return utils.get_user_by_id(id)
+    return dao.get_user_by_id(id)
 
 
 if __name__ == '__main__':
