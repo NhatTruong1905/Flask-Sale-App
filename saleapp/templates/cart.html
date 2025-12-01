@@ -30,8 +30,8 @@
 </table>
 
 <div class="alert alert-info">
-    <h3>Tổng tiền: <span class="cart_amount">{{ "{:,.0f}".format(cart_stats.total_amount) }}</span> VND</h3>
-    <h3>Tổng số lượng: <span class="cart_counter">{{ cart_stats.total_quantity }}</span></h3>
+    <h3>Tổng số lượng: <span class="cart-counter">{{ cart_stats.total_quantity }}</span></h3>
+    <h3>Tổng tiền: <span class="cart-amount">{{ "{:,.0f}".format(cart_stats.total_amount) }}</span> VND</h3>
 </div>
 {% if current_user.is_authenticated %}
 <div class="mt-1 mb-1">
