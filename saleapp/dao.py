@@ -19,7 +19,7 @@ def load_products(cate_id=None, kw=None, page=1):
         query = query.filter(Product.name.contains(kw))
 
     if cate_id:
-        query = query.filter(Product.category_id.__eq__(cate_id))
+        query = query.filter(Product.category_id == cate_id)
 
     if page:
         start = (page - 1) * app.config['PAGE_SIZE']
