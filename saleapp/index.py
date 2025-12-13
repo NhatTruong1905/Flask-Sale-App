@@ -1,8 +1,8 @@
-from pathlib import Path
-import sys
-
-ROOT_DIR = Path(__file__).resolve().parent.parent
-sys.path.append(str(ROOT_DIR))
+# from pathlib import Path
+# import sys
+#
+# ROOT_DIR = Path(__file__).resolve().parent.parent
+# sys.path.append(str(ROOT_DIR))
 
 from saleapp import app, dao, login, utils
 from flask import render_template, request, redirect, jsonify, session, Flask

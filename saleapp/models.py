@@ -47,7 +47,7 @@ class Product(BaseModel):
     price = Column(Float, default=0)
     image = Column(String(1000),
                    default="https://res.cloudinary.com/dice7ntoz/image/upload/v1764583917/licensed-image_zqumzq.jpg")
-    category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
+    category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
 
     def __str__(self):
         return self.name

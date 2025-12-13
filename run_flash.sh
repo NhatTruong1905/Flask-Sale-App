@@ -1,4 +1,4 @@
-pip install -r requirement.txt
+pip install -r requirements.txt
 
 python saleapp/models.py
 
